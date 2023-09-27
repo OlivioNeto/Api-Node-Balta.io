@@ -6,12 +6,12 @@ const Schema = mongoose.Schema;
 const schema = new Schema({
     title: {
         type: String,
-        required: true, 
-        trim: true // tira os espaços entes e depois da string
+        required: true,
+        trim: true
     },
     slug: {
         type: String,
-        required: true,
+        required: [true, 'O slug é obrigatório'],
         trim: true,
         index: true,
         unique: true
@@ -29,10 +29,17 @@ const schema = new Schema({
         required: true,
         default: true
     },
-    tags: [{ //array
+    tags: [{
         type: String,
         required: true
     }],
+    image: {
+        type: String,
+        required: false,
+        trim: true
+    }
 });
 
-module.exports = mongoose.Model('Product', schema);
+
+const Product = mongoose.model('Product', schema);
+module.exports = Product;
