@@ -10,6 +10,9 @@ const router = express.Router();
 // conecta ao banco de dados
 mongoose.connect('mongodb://localhost:27017');
 
+// carrega as models
+const Product = require('./models/product');
+
 // Carrega as rotas 
 const indexRoute = require('./routes/indexRoute');
 const productRoute = require('./routes/productRoute');
