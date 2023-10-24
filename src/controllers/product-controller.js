@@ -2,12 +2,12 @@
 
 const mongoose = require('mongoose');
 const Product = mongoose.model('Product');
+const ValidationContract = require('../validators/fluent-validation');  
+
 
 exports.get = (req, res, next) =>{
-    Product
-        .find({
-            active: true
-        }, 'title price slug')
+    repository
+    .get()
     .then(data => {
         res.status(200).send(data);
     }).catch(e =>{
@@ -60,6 +60,18 @@ exports.getById = (req, res, next) =>{
 }
 
 exports.post = (req, res, next) => {
+    let contract = new ValidationContract();
+    contract.hasMinLen(req.body.title, 3, 'O título deve conter pelo menos 3 caracateres');
+    contract.hasMinLen(req.body.slug, 3, 'O slug deve conter pelo menos 3 caracateres');
+    contract.hasMinLen(req.body.description, 3, 'A descrição deve conter pelo menos 3 caracateres');
+
+    //se os dados forem inválidos
+    if(!contract.isValid()){
+        res.status(400).send(contract.errors()).end();
+        return;
+    }
+
+
     var product = new Product(req.body)
     product.save()
         .then(x => {
