@@ -3,7 +3,7 @@
 const mongoose = require('mongoose');
 const Product = mongoose.model('Product');
 const ValidationContract = require('../validators/fluent-validation');  
-
+const repository = require('../repositories/product-repository');
 
 exports.get = (req, res, next) =>{
     repository
@@ -16,10 +16,8 @@ exports.get = (req, res, next) =>{
 }
 
 exports.getBySlug = (req, res, next) =>{
-    Product
-        .findOne({
-            slug: req.params.slug,
-            active: true}, 'title description price slug tags')
+   repository.
+    getBySlug(req.params.slug)
     .then(data => {
         res.status(200).send(data);
     }).catch(e =>{
@@ -28,8 +26,8 @@ exports.getBySlug = (req, res, next) =>{
 }
 
 exports.getById = (req, res, next) =>{
-    Product
-        .findById(req.params.id)
+    repository
+    .getById(req.params.id)
     .then(data => {
         res.status(200).send(data);
     }).catch(e =>{
@@ -38,20 +36,7 @@ exports.getById = (req, res, next) =>{
 }
 
 exports.getByTag = (req, res, next) =>{
-    Product
-        .find({
-            tags: req.params.tag,
-            active: true
-        }, 'title description price slug tags')
-    .then(data => {
-        res.status(200).send(data);
-    }).catch(e =>{
-        res.status(400).send(e);
-    });
-}
-exports.getById = (req, res, next) =>{
-    Product
-        .findById(req.params.id)
+    repository.getByTag(req.params.tag)
     .then(data => {
         res.status(200).send(data);
     }).catch(e =>{
