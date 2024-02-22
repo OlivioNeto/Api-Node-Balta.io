@@ -3,7 +3,7 @@
 const mongoose = require('mongoose');
 const Product = mongoose.model('Product');
 
-exports.get = () => {
+exports.get = async () => {
     return Product
         .find({
             active: true
